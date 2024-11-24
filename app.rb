@@ -2,15 +2,37 @@ require "cuba"
 require "json"
 require 'securerandom'
 require "./state.rb"
+require "./auth.rb"
+
+class AuthAPI < Cuba; end
+
+# AuthAPI.use Authenticator
+
+AuthAPI.define do
+  on "products" do
+    res.write JSON.generate({"products" => $app.products.map{|id, name| {"id" => id, "name" => name}}})
+  end
+  on "product" do
+    on root do
+      on param("id"), param("name") do |id, name|
+        $app.add_product(id, name)
+        res.write ""
+      end
+      on true do
+        res.status = 500
+        res.write("Need id and name parameters")
+      end
+    end
+  end
+end
 
 Cuba.define do
   on get do
     on root do
       res.write "Hello world"
     end
-
-    on "products" do
-      res.write JSON.generate({"products" => $app.products.map{|id, name| {"id" => id, "name" => name}}})
+    on true do
+      run AuthAPI
     end
   end
 
@@ -35,16 +57,8 @@ Cuba.define do
         res.write("Need user and password parameters")
       end
     end
-
-    on "product" do
-      on param("id"), param("name") do |id, name|
-        $app.add_product(id, name)
-        res.write ""
-      end
-      on true do
-        res.status = 500
-        res.write("Need id and name parameters")
-      end
+    on true do
+      run AuthAPI
     end
   end
 end
