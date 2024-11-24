@@ -10,7 +10,7 @@ Cuba.define do
     end
 
     on "products" do
-      res.write JSON.generate({"products" => $app.products})
+      res.write JSON.generate({"products" => $app.products.map{|id, name| {"id" => id, "name" => name}}})
     end
   end
 
@@ -38,7 +38,7 @@ Cuba.define do
 
     on "product" do
       on param("id"), param("name") do |id, name|
-        $app.products.push({"id" => id, "name"=> name})
+        $app.add_product(id, name)
         res.write ""
       end
       on true do

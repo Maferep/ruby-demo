@@ -5,7 +5,7 @@ require "cuba/test"
 require './app.rb'
 
 setup do
-  $app = AppState.new
+  $app = AppState.new(Store_SQLite.from_memory)
 end
 
 scope do

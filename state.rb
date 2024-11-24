@@ -1,13 +1,22 @@
+require "./store.rb"
+
 class AppState
-  def initialize()
-		@products = []
+  def initialize(store = nil)
     @temp_unsafe_login = {"user2": {user: "user2", password:"password2", token:nil}}
+    @db = store ? store 
+    : Store_SQLite.from_filename("store.db")
 	end
+
   def products
-    @products
+    @db.list_products
   end
-  # dfsdfdsf
-  def get_credential(user, password) # create new session with random 
+
+  def add_product(id, name)
+    @db.add_product(id, name)
+  end
+
+  # Create new session with random token
+  def get_credential(user, password)
     credentials = @temp_unsafe_login.select {|key, credential| credential[:user] == user}.values
     if credentials.length == 0
       return ["nocred", nil]
