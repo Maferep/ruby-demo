@@ -9,18 +9,22 @@ class AuthAPI < Cuba; end
 # AuthAPI.use Authenticator
 
 AuthAPI.define do
-  on "products" do
-    res.write JSON.generate({"products" => $app.products.map{|id, name| {"id" => id, "name" => name}}})
+  on get do
+    on "products" do
+      res.write JSON.generate({"products" => $app.products.map{|id, name| {"id" => id, "name" => name}}})
+    end
   end
-  on "product" do
-    on root do
-      on param("id"), param("name") do |id, name|
-        $app.add_product(id, name)
-        res.write ""
-      end
-      on true do
-        res.status = 500
-        res.write("Need id and name parameters")
+  on post do
+    on "product" do
+      on root do
+        on param("id"), param("name") do |id, name|
+          $app.add_product(id, name)
+          res.write ""
+        end
+        on true do
+          res.status = 500
+          res.write("Need id and name parameters")
+        end
       end
     end
   end
