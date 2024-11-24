@@ -13,7 +13,8 @@ end
 
 scope do
   test "Submit" do
-    post("/product", { "id" => 1, "name" => "pizza" }, 'CONTENT_TYPE' => 'query_params')
-    assert_equal "Need id and name parameters", last_response.body
+    post("/product?id=1&name=pizza")
+    assert_equal "", last_response.body
+    assert_equal 200, last_response.status
   end
 end
