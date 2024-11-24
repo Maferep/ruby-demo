@@ -43,7 +43,7 @@ class Store_SQLite
 
   def add_token(user, token)
     @db.execute(
-      'INSERT INTO sessions (user, token, date_created) VALUES (?, ?, datetime(now));',
+      'INSERT INTO sessions (user, token, date_created) VALUES (?, ?, datetime(\'now\'));',
       [ user, token ]
     )
   end

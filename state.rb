@@ -2,7 +2,7 @@ require "./store.rb"
 
 class AppState
   def initialize(store = nil)
-    @temp_unsafe_login = {"user2": {user: "user2", password:"password2", token:nil}}
+    @temp_unsafe_login = {"user2": {user: "user2", password:"password2"}}
     @db = store ? store 
     : Store_SQLite.from_filename("store.db")
 	end
@@ -25,7 +25,7 @@ class AppState
       if cred[:password] == password
         token = SecureRandom.base64(12)
         # store token
-        cred[:token] = token
+        @db.add_token(cred[:user], token)
         return ["token", token]
       else
         return ["invalid", nil]
