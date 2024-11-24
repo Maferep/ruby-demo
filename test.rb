@@ -60,5 +60,6 @@ scope do
   test "Login" do
     post "login?user=user2&password=password2"
     assert_equal 200, last_response.status
+    assert_equal "id=", last_response.headers["set-cookie"][..2]
   end
 end

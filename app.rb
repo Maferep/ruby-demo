@@ -1,5 +1,6 @@
 require "cuba"
 require "json"
+require 'securerandom'
 
 $products = []
 $temp_unsafe_login = [{user: "user2", password:"password2"}]
@@ -22,22 +23,16 @@ Cuba.define do
           res.status=411
           res.write("")
         end
-        puts $temp_unsafe_login[0][:user]
         credentials = $temp_unsafe_login.select {|credential| credential[:user] == user}
         if credentials == []
-          puts "whoops"
           res.status=411
           res.write("Invalid credentials")
         else
-          print credentials.class
-          print credentials
-          puts credentials[0][:password]
-          puts password
           if credentials[0][:password] == password
-            puts "good login"
+            token = SecureRandom.base64(12)
+            res.headers['Set-Cookie'] = "id=" + token.to_s
             res.write ""
           else
-            puts "bad login"
             res.status = 411
             res.write "Invalid credentials"
           end
