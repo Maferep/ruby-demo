@@ -48,3 +48,17 @@ scope do
     assert_equal "{\"products\":[{\"id\":\"10\",\"name\":\"coffee\"}]}", last_response.body
   end
 end
+
+scope do
+  test "Login" do
+    post "login?user=user&password=password"
+    assert_equal 411, last_response.status
+  end
+end
+
+scope do
+  test "Login" do
+    post "login?user=user2&password=password2"
+    assert_equal 200, last_response.status
+  end
+end
