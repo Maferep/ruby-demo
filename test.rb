@@ -5,7 +5,7 @@ require "cuba/test"
 require './app.rb'
 
 setup do
-  $products = []
+  $app = AppState.new
 end
 
 scope do

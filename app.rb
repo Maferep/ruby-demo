@@ -1,9 +1,7 @@
 require "cuba"
 require "json"
 require 'securerandom'
-
-$products = []
-$temp_unsafe_login = {"user2": {user: "user2", password:"password2", token:nil}}
+require "./state.rb"
 
 Cuba.define do
   on get do
@@ -12,7 +10,7 @@ Cuba.define do
     end
 
     on "products" do
-      res.write JSON.generate({"products" => $products})
+      res.write JSON.generate({"products" => $app.products})
     end
   end
 
@@ -23,22 +21,13 @@ Cuba.define do
           res.status=411
           res.write("")
         end
-        credentials = $temp_unsafe_login.select {|key, credential| credential[:user] == user}.values
-        if credentials.length == 0
-          res.status=411
-          res.write("Invalid credentials")
+        credential = $app.get_credential(user, password)
+        if credential[0]=="token"
+          res.headers['Set-Cookie'] = "id=" + credential[1].to_s
+          res.write ""
         else
-          cred = credentials[0]
-          if cred[:password] == password
-            token = SecureRandom.base64(12)
-            # store token
-
-            res.headers['Set-Cookie'] = "id=" + token.to_s
-            res.write ""
-          else
-            res.status = 411
-            res.write "Invalid credentials"
-          end
+          res.status=411
+          res.write("Not authorized")
         end
       end
       on true do
@@ -49,7 +38,7 @@ Cuba.define do
 
     on "product" do
       on param("id"), param("name") do |id, name|
-        $products.push({"id" => id, "name"=> name})
+        $app.products.push({"id" => id, "name"=> name})
         res.write ""
       end
       on true do
