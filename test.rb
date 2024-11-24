@@ -15,9 +15,16 @@ scope do
   end
 end
 
+scope do
+  test "Unauthorized" do
+    set_cookie("")
+    post("/product?id=1&name=pizza")
+    assert_equal 403, last_response.status
+  end
+end
 
 scope do
-  test "Submit" do
+  test "Authorized Submit" do
     set_cookie("id=123")
     post("/product?id=1&name=pizza",{})
     assert_equal "", last_response.body
@@ -26,7 +33,7 @@ scope do
 end
 
 scope do
-  test "Submit" do
+  test "Incorrect Endpoint" do
     set_cookie("id=123")
     post("/product/productsdfsdfsdfs?id=6&name=wrong")
     assert_equal 404, last_response.status
@@ -34,10 +41,10 @@ scope do
 end
 
 scope do
-  test "Invalid Submit" do
+  test "Invalid Query Params" do
     set_cookie("id=123")
     post("/product?invalidquery=123")
-    assert_equal 500, last_response.status
+    assert_equal 411, last_response.status
   end
 end
 

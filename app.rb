@@ -22,7 +22,7 @@ AuthAPI.define do
           res.write ""
         end
         on true do
-          res.status = 500
+          res.status = 411
           res.write("Need id and name parameters")
         end
       end
@@ -52,7 +52,7 @@ Cuba.define do
           res.headers['Set-Cookie'] = "id=" + credential[1].to_s
           res.write ""
         else
-          res.status=411
+          res.status=403
           res.write("Not authorized")
         end
       end
