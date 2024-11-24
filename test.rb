@@ -18,7 +18,8 @@ end
 
 scope do
   test "Submit" do
-    post("/product?id=1&name=pizza")
+    set_cookie("id=123")
+    post("/product?id=1&name=pizza",{})
     assert_equal "", last_response.body
     assert_equal 200, last_response.status
   end
@@ -26,6 +27,7 @@ end
 
 scope do
   test "Submit" do
+    set_cookie("id=123")
     post("/product/productsdfsdfsdfs?id=6&name=wrong")
     assert_equal 404, last_response.status
   end
@@ -33,6 +35,7 @@ end
 
 scope do
   test "Invalid Submit" do
+    set_cookie("id=123")
     post("/product?invalidquery=123")
     assert_equal 500, last_response.status
   end
@@ -41,6 +44,7 @@ end
 
 scope do
   test "Create and get product" do
+    set_cookie("id=123")
     get "products"
     assert_equal 200, last_response.status
     assert_equal "{\"products\":[]}", last_response.body

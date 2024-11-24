@@ -6,7 +6,7 @@ require "./auth.rb"
 
 class AuthAPI < Cuba; end
 
-# AuthAPI.use Authenticator
+AuthAPI.use Authenticator
 
 AuthAPI.define do
   on get do
