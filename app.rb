@@ -15,6 +15,7 @@ Cuba.define do
         res.write ""
       end
       on true do
+        res.status = 500
         res.write("Need id and name parameters")
       end
     end
