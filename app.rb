@@ -22,7 +22,7 @@ AuthAPI.define do
           res.write ""
         end
         on true do
-          res.status = 411
+          res.status = 403
           res.write("Need id and name parameters")
         end
       end
@@ -44,7 +44,7 @@ Cuba.define do
     on "login" do
       on param("user"), param("password") do |user, password|
         if user == nil
-          res.status=411
+          res.status=403
           res.write("")
         end
         credential = $app.get_credential(user, password)
@@ -57,7 +57,7 @@ Cuba.define do
         end
       end
       on true do
-        res.status = 411
+        res.status = 403
         res.write("Need user and password parameters")
       end
     end

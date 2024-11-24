@@ -44,7 +44,7 @@ scope do
   test "Invalid Query Params" do
     set_cookie("id=123")
     post("/product?invalidquery=123")
-    assert_equal 411, last_response.status
+    assert_equal 403, last_response.status
   end
 end
 
@@ -70,7 +70,7 @@ end
 scope do
   test "Login" do
     post "login?user=user&password=password"
-    assert_equal 411, last_response.status
+    assert_equal 403, last_response.status
   end
 end
 
