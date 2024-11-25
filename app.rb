@@ -47,7 +47,7 @@ Cuba.define do
         end
         credential = $app.get_credential(user, password)
         if credential[0]=="token"
-          res.headers['Set-Cookie'] = "id=" + credential[1].to_s
+          res.headers['set-cookie'] = "id=" + credential[1].to_s
           res.write ""
         else
           res.status=403

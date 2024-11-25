@@ -14,6 +14,7 @@ class Authenticator
       if cookie && cookie.length > 0
         session_id = cookie[3..]
         user = @store.validate_token(session_id)
+        print user ? user : "NO USER FOUND"
         if user
           status, headers, response = @app.call(env)
         else

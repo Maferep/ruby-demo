@@ -29,7 +29,7 @@ class AppState
       if cred[:password] == password
         token = SecureRandom.base64(12)
         # store token
-        @db.add_token(cred[:user], token)
+        @db.add_token(cred[:user], token.to_s)
         return ["token", token]
       else
         return ["invalid", nil]

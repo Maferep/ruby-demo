@@ -5,9 +5,9 @@ require "cuba/test"
 require './app.rb'
 
 setup do
-  $test_store = Store_SQLite.from_memory
-  $test_store.add_token("user2", 123)
-  $app = AppState.new($test_store)
+  test_store = Store_SQLite.from_memory
+  test_store.add_token("user2", "GiFgRpYXJn+hXMGd")
+  $app = AppState.new(test_store)
   AuthAPI.use Authenticator, app: $app
 end
 
@@ -28,7 +28,7 @@ end
 
 scope do
   test "Authorized Submit" do
-    set_cookie("id=123")
+    set_cookie("id=GiFgRpYXJn+hXMGd")
     post("/product?id=1&name=pizza",{})
     assert_equal "", last_response.body
     assert_equal 200, last_response.status
@@ -37,7 +37,7 @@ end
 
 scope do
   test "Incorrect Endpoint" do
-    set_cookie("id=123")
+    set_cookie("id=GiFgRpYXJn+hXMGd")
     post("/product/productsdfsdfsdfs?id=6&name=wrong")
     assert_equal 404, last_response.status
   end
@@ -45,8 +45,8 @@ end
 
 scope do
   test "Invalid Query Params" do
-    set_cookie("id=123")
-    post("/product?invalidquery=123")
+    set_cookie("id=GiFgRpYXJn+hXMGd")
+    post("/product?invalidquery=GiFgRpYXJn+hXMGd")
     assert_equal 403, last_response.status
   end
 end
@@ -54,7 +54,7 @@ end
 
 scope do
   test "Create and get product" do
-    set_cookie("id=123")
+    set_cookie("id=GiFgRpYXJn+hXMGd")
     get "products"
     assert_equal 200, last_response.status
     assert_equal "{\"products\":[]}", last_response.body

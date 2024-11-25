@@ -44,7 +44,7 @@ class Store_SQLite
   def add_token(user, token)
     @db.execute(
       'INSERT INTO sessions (user, token, date_created) VALUES (?, ?, datetime(\'now\'));',
-      [ user, token ]
+      [ user, token.to_s ]
     )
     
     stmt = @db.prepare 'SELECT * FROM sessions;'
@@ -52,11 +52,11 @@ class Store_SQLite
   end
 
   def validate_token(token)
-    token = Integer(token)
-    stmt = @db.prepare 'SELECT user FROM sessions;'
-    result_set = stmt.execute
-    stmt = @db.prepare 'SELECT user FROM sessions WHERE token=?;'
-    result_set = stmt.execute [token]
+    puts
+    puts token=="GiFgRpYXJn+hXMGd".dup
+    puts token.class
+    puts "GiFgRpYXJn+hXMGd".class
+    result_set = @db.execute 'SELECT user FROM sessions WHERE token=?;', ["GiFgRpYXJn+hXMGd"]
     result_set = result_set.map{|e| e}
     return result_set.length > 0 ? result_set[0][0] : nil
   end
