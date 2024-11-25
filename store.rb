@@ -38,7 +38,7 @@ class Store_SQLite
   def list_products
     stmt = @db.prepare "SELECT * FROM products"
     result_set = stmt.execute
-    return result_set.map{|hash| hash}
+    return result_set.map{|e| e}
   end
 
   def add_token(user, token)
@@ -46,6 +46,19 @@ class Store_SQLite
       'INSERT INTO sessions (user, token, date_created) VALUES (?, ?, datetime(\'now\'));',
       [ user, token ]
     )
+    
+    stmt = @db.prepare 'SELECT * FROM sessions;'
+    result_set = stmt.execute
+  end
+
+  def validate_token(token)
+    token = Integer(token)
+    stmt = @db.prepare 'SELECT user FROM sessions;'
+    result_set = stmt.execute
+    stmt = @db.prepare 'SELECT user FROM sessions WHERE token=?;'
+    result_set = stmt.execute [token]
+    result_set = result_set.map{|e| e}
+    return result_set.length > 0 ? result_set[0][0] : nil
   end
 
 end

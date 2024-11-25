@@ -7,6 +7,10 @@ class AppState
     : Store_SQLite.from_filename("store.db")
 	end
 
+  def validate_token(token)
+    @db.validate_token(token)
+  end
+
   def products
     @db.list_products
   end

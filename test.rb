@@ -5,7 +5,10 @@ require "cuba/test"
 require './app.rb'
 
 setup do
-  $app = AppState.new(Store_SQLite.from_memory)
+  $test_store = Store_SQLite.from_memory
+  $test_store.add_token("user2", 123)
+  $app = AppState.new($test_store)
+  AuthAPI.use Authenticator, app: $app
 end
 
 scope do
