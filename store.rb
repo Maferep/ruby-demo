@@ -18,7 +18,7 @@ class Store_SQLite
       CREATE TABLE IF NOT EXISTS products (id, name);
     SQL
     @db.execute <<-SQL
-      CREATE TABLE IF NOT EXISTS sessions (user, token, date_created);
+      CREATE TABLE IF NOT EXISTS sessions (user TEXT, token TEXT, date_created TEXT);
     SQL
     @db.execute <<-SQL
       CREATE TABLE IF NOT EXISTS users (user, password);
@@ -52,11 +52,7 @@ class Store_SQLite
   end
 
   def validate_token(token)
-    puts
-    puts token=="GiFgRpYXJn+hXMGd".dup
-    puts token.class
-    puts "GiFgRpYXJn+hXMGd".class
-    result_set = @db.execute 'SELECT user FROM sessions WHERE token=?;', ["GiFgRpYXJn+hXMGd"]
+    result_set = @db.execute 'SELECT user FROM sessions WHERE token=?;', [token.encode('UTF-8')]
     result_set = result_set.map{|e| e}
     return result_set.length > 0 ? result_set[0][0] : nil
   end
