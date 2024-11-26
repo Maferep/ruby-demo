@@ -7,11 +7,11 @@ require './app.rb'
 TEST_TOKEN =  "GiFgRpYXJnhXMGd"
 
 setup do
+  AuthAPI.reset!
+  Cuba.reset!
   test_store = Store_SQLite.from_memory
   test_store.add_token("user2", TEST_TOKEN)
   $app = AppState.new({"user2": {user: "user2", password:"password2"}}, test_store)
-  AuthAPI.reset!
-  Cuba.reset!
   define_apis()
   AuthAPI.use Authenticator, app: $app
 end
@@ -21,6 +21,14 @@ scope do
   test "Homepage" do
     get "/"
     assert_equal "Hello world", last_response.body
+  end
+end
+
+scope do
+  test "Unauthorized GET" do
+    set_cookie("")
+    get("/products")
+    assert_equal 403, last_response.status
   end
 end
 

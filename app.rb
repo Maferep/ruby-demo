@@ -65,4 +65,5 @@ def define_apis
       end
     end
   end
+  AuthAPI.use Authenticator, app: $app
 end
