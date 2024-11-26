@@ -38,7 +38,7 @@ class AppState
   end
 end
 
-# initialize with hardcoded system credentials (unsafe)
-$app = AppState.new({"user2": {user: "user2", password:"password2"}})
+# initialize with default credentials from file
+$app = AppState.new(JSON.parse(File.read("credentials/test_credentials.json")))
 
 

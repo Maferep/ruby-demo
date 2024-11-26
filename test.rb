@@ -11,6 +11,22 @@ setup do
   AuthAPI.use Authenticator, app: $app
 end
 
+
+scope do
+  test "Login" do
+    post("login", {'user'=>'user2', 'password'=>'password2'})
+    print "\nheaders:"
+    print last_response.headers["set-cookie"]
+    set_cookie(last_response.headers["set-cookie"])
+    get "products"
+
+    assert_equal 200, last_response.status
+    assert_equal "{\"products\":[]}", last_response.body
+
+  end
+end
+
+
 scope do
   test "Homepage" do
     get "/"
@@ -34,7 +50,6 @@ scope do
     assert_equal 200, last_response.status
   end
 end
-
 
 scope do
   test "Authorized Submit with additional cookies" do
@@ -86,10 +101,3 @@ scope do
   end
 end
 
-scope do
-  test "Login" do
-    post("login", {'user'=>'user2', 'password'=>'password2'})
-    assert_equal 200, last_response.status
-    assert_equal "id=", last_response.headers["set-cookie"][..2]
-  end
-end
