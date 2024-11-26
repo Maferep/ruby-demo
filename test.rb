@@ -8,22 +8,10 @@ setup do
   test_store = Store_SQLite.from_memory
   test_store.add_token("user2", "GiFgRpYXJnhXMGd")
   $app = AppState.new({"user2": {user: "user2", password:"password2"}}, test_store)
+  AuthAPI.reset!
+  Cuba.reset!
+  define_apis()
   AuthAPI.use Authenticator, app: $app
-end
-
-
-scope do
-  test "Login" do
-    post("login", {'user'=>'user2', 'password'=>'password2'})
-    print "\nheaders:"
-    print last_response.headers["set-cookie"]
-    set_cookie(last_response.headers["set-cookie"])
-    get "products"
-
-    assert_equal 200, last_response.status
-    assert_equal "{\"products\":[]}", last_response.body
-
-  end
 end
 
 
@@ -98,6 +86,21 @@ scope do
   test "Login" do
     post("login", {'user'=>'bad_user', 'password'=>'bad_password'})
     assert_equal 403, last_response.status
+  end
+end
+
+
+scope do
+  test "Login" do
+    post("login", {'user'=>'user2', 'password'=>'password2'})
+    print "\nheaders:"
+    print last_response.headers["set-cookie"]
+    set_cookie(last_response.headers["set-cookie"])
+    get "products"
+
+    assert_equal 200, last_response.status
+    assert_equal "{\"products\":[]}", last_response.body
+
   end
 end
 
