@@ -7,7 +7,7 @@ require './app.rb'
 setup do
   test_store = Store_SQLite.from_memory
   test_store.add_token("user2", "GiFgRpYXJnhXMGd")
-  $app = AppState.new(test_store)
+  $app = AppState.new({"user2": {user: "user2", password:"password2"}}, test_store)
   AuthAPI.use Authenticator, app: $app
 end
 

@@ -1,8 +1,8 @@
 require "./store.rb"
 
 class AppState
-  def initialize(store = nil)
-    @temp_unsafe_login = {"user2": {user: "user2", password:"password2"}}
+  def initialize(login_hash, store = nil)
+    @temp_unsafe_login = login_hash
     @db = store ? store 
     : Store_SQLite.from_filename("store.db")
 	end
@@ -38,6 +38,7 @@ class AppState
   end
 end
 
-$app = AppState.new
+# initialize with hardcoded system credentials (unsafe)
+$app = AppState.new({"user2": {user: "user2", password:"password2"}})
 
 
