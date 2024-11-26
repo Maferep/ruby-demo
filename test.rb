@@ -35,6 +35,17 @@ scope do
   end
 end
 
+
+scope do
+  test "Authorized Submit with additional cookies" do
+    set_cookie("unrelated_cookie=abcde")
+    set_cookie("id=GiFgRpYXJnhXMGd")
+    post("/product?id=1&name=pizza",{})
+    assert_equal "", last_response.body
+    assert_equal 200, last_response.status
+  end
+end
+
 scope do
   test "Incorrect Endpoint" do
     set_cookie("id=GiFgRpYXJnhXMGd")
