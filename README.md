@@ -11,6 +11,16 @@ On the root directory:
 
 ```bundle exec rackup```
 
+App is exposed on localhost:9292
+
 # Tests
 
 ```bundle exec ruby test.rb```
+
+# Docker
+
+```docker build -t my-ruby-app .```
+
+```docker run --network host -d my-ruby-app```
+
+App is exposed on localhost:9292
