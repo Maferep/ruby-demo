@@ -3,35 +3,35 @@ class Authenticator
     @app = app
     @store = store[:app]
   end
-  
+
   def is_restricted(endpoint)
     return ((endpoint == "/product") or (endpoint == "/products"))
   end
 
   def call(env)
-    cookie = env["HTTP_COOKIE"]
-    if is_restricted(env["PATH_INFO"])
-      if cookie && cookie.length > 0
-        session_id = cookie[3..]
-        user = @store.validate_token(session_id)
-        if user
-          status, headers, response = @app.call(env)
-        else
-          status = 403
-          headers = {'content-type' => 'text/plain'} # missing www header
-          response =  ["Not Authorized"]
-        end
-      else
-        status = 403
-        headers = {'content-type' => 'text/plain'} # missing www header
-        response =  ["Not Authorized"]
-      end
-    else
-      status = 404
-      headers = {'content-type' => 'text/plain'}
-      response =  ["Not Found"]
+    if not is_restricted env["PATH_INFO"]
+      return @app.call env
     end
-    [status, headers, response]
+
+    req = Rack::Request.new env
+    token = req.cookies['id']
+    if not token
+      return [
+        403,
+        {'content-type' => 'text/plain'},
+        [ 'Not Authorized' ]
+      ]
+    end
+
+    user = @store.validate_token token
+    if user.nil?
+      return [
+        403,
+        {'content-type' => 'text/plain'}, # missing www header
+        [ 'Not Authorized' ]
+      ]
+    end
+
+    return @app.call env
   end
 end
-
