@@ -10,10 +10,9 @@ setup do
   test_store = Store_SQLite.from_memory
   test_store.add_token("user2", TEST_TOKEN)
   $app = AppState.new({"user2": {user: "user2", password:"password2"}}, test_store)
-  AuthAPI.reset!
   Cuba.reset!
   define_apis()
-  AuthAPI.use Authenticator, app: $app
+  Cuba.use Authenticator, app: $app
 end
 
 
