@@ -21,7 +21,7 @@ end
 scope do
   test "Unauthorized" do
     set_cookie("")
-    post("/product?id=1&name=pizza")
+    post("/product", {'id'=>'1', 'name'=>'pizza'})
     assert_equal 403, last_response.status
   end
 end
@@ -29,7 +29,7 @@ end
 scope do
   test "Authorized Submit" do
     set_cookie("id=GiFgRpYXJnhXMGd")
-    post("/product?id=1&name=pizza",{})
+    post("/product", {'id'=>'1', 'name'=>'pizza'})
     assert_equal "", last_response.body
     assert_equal 200, last_response.status
   end
@@ -40,7 +40,7 @@ scope do
   test "Authorized Submit with additional cookies" do
     set_cookie("unrelated_cookie=abcde")
     set_cookie("id=GiFgRpYXJnhXMGd")
-    post("/product?id=1&name=pizza",{})
+    post("/product", {'id'=>'1', 'name'=>'pizza'})
     assert_equal "", last_response.body
     assert_equal 200, last_response.status
   end
@@ -49,7 +49,7 @@ end
 scope do
   test "Incorrect Endpoint" do
     set_cookie("id=GiFgRpYXJnhXMGd")
-    post("/product/productsdfsdfsdfs?id=6&name=wrong")
+    post("/product/bad-endpoint", {'id'=>'6', 'name'=>'wrong'})
     assert_equal 404, last_response.status
   end
 end
@@ -57,7 +57,7 @@ end
 scope do
   test "Invalid Query Params" do
     set_cookie("id=GiFgRpYXJnhXMGd")
-    post("/product?invalidquery=GiFgRpYXJnhXMGd")
+    post("/product", {'invalid'=>'6'})
     assert_equal 403, last_response.status
   end
 end
@@ -69,9 +69,7 @@ scope do
     get "products"
     assert_equal 200, last_response.status
     assert_equal "{\"products\":[]}", last_response.body
-    # assert_equal "{\"products\":[]}", last_response.body
-
-    post("/product?id=10&name=coffee")
+    post("/product", {'id'=>10, 'name'=>'coffee'})
     assert_equal 200, last_response.status
     assert_equal "", last_response.body
 
@@ -83,14 +81,14 @@ end
 
 scope do
   test "Login" do
-    post "login?user=user&password=password"
+    post("login", {'user'=>'bad_user', 'password'=>'bad_password'})
     assert_equal 403, last_response.status
   end
 end
 
 scope do
   test "Login" do
-    post "login?user=user2&password=password2"
+    post("login", {'user'=>'user2', 'password'=>'password2'})
     assert_equal 200, last_response.status
     assert_equal "id=", last_response.headers["set-cookie"][..2]
   end
