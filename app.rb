@@ -66,5 +66,5 @@ def define_apis
 
     end
   end
-  AuthAPI.use Authenticator, app: $app
+  Cuba.use Authenticator, app: $app
 end
