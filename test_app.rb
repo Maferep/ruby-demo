@@ -6,11 +6,11 @@ require './state.rb'
 require "http"
 
 scope do
-  test "Homepage" do
+  test "Request products" do
     test_store = Store_SQLite.from_memory
-    app = AppState.new({}, test_store)
+    app = AppState.new({}, sync=false, test_store)
     res = app.request_products_external()
-    assert_equal JSON.parse(res.to_s), {
+    assert_equal res, {
       "data" => [
         {
           "id" => 1,
@@ -22,5 +22,12 @@ scope do
         }
       ]
     }
+  end
+  test "Sync products" do
+    test_store = Store_SQLite.from_memory
+    app = AppState.new({}, sync=false, test_store)
+    app.sync_products()
+    list = app.products()
+    assert_equal list,  [[1, "Apple"], [2, "Banana"]]
   end
 end

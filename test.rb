@@ -3,6 +3,7 @@ require "rack"
 require "rack/test"
 require "cuba/test"
 require './app.rb'
+require './test_app.rb'
 
 TEST_TOKEN =  "GiFgRpYXJnhXMGd"
 
@@ -10,7 +11,7 @@ setup do
   Cuba.reset!
   test_store = Store_SQLite.from_memory
   test_store.add_token("user2", TEST_TOKEN)
-  $app = AppState.new({"user2": {user: "user2", password:"password2"}}, test_store)
+  $app = AppState.new({"user2": {user: "user2", password:"password2"}}, sync=false, test_store)
   define_apis()
   Cuba.use Authenticator, app: $app
 end
