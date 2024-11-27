@@ -2,3 +2,4 @@
 vendor
 .bundle
 store.db
+database.db

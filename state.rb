@@ -20,6 +20,9 @@ class AppState
   end
 
   def sync_products()
+    if @db.list_products().length > 0
+      return
+    end
     list = request_products_external()["data"]
     
     list.each do |hash|
