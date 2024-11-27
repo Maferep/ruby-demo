@@ -1,0 +1,1 @@
+TCP es un protocolo de transporte que provee garantías de orden e integridad de paquetes implementando lógica en los extremos de un medio no confiable. Utiliza un HANDSHAKE para establecer una conexión de larga vida y usa tácticas de reenvío y corrección de errores para contraarrestar pérdidas de paquetes.

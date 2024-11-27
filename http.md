@@ -1,0 +1,1 @@
+HTTP es una familia de protocolos de **capa de aplicación** de modelo cliente-servidor basado en texto para transmitir mensajes por la internet. Funciona sobre la capa de transporte TCP y es un protocolo esencial de la Web. Provee una interfaz para que clientes envíen REQUESTS a servidores que proveen RESPONSES.
