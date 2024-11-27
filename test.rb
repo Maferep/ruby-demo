@@ -11,7 +11,7 @@ setup do
   Cuba.reset!
   test_store = Store_SQLite.from_memory
   test_store.add_token("user2", TEST_TOKEN)
-  $app = AppState.new({"user2": {user: "user2", password:"password2"}}, sync=false, test_store)
+  $app = AppState.new({"user2"=> {"user" => "user2", "password" => "password2"}}, sync=false, test_store)
   define_apis()
   Cuba.use Authenticator, app: $app
 end
@@ -99,10 +99,9 @@ scope do
   end
 end
 
-
 scope do
   test "Login" do
-    post("login", {'user'=>'user2', 'password'=>'password2'})
+    post("login",  {"user" => "user2", "password" => "password2"})
     set_cookie(last_response.headers["set-cookie"])
     get "products"
 

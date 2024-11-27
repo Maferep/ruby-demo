@@ -3,7 +3,6 @@ require "rack"
 require "rack/test"
 require "cuba/test"
 require './state.rb'
-require "http"
 
 scope do
   test "Request products" do

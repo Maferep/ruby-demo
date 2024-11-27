@@ -42,6 +42,9 @@ class Store_SQLite
   end
 
   def add_token(user, token)
+    if !user || !token
+      raise StandardError.new "null user or token"
+    end
     @db.execute(
       'INSERT INTO sessions (user, token, date_created) VALUES (?, ?, datetime(\'now\'));',
       [ user, token.to_s ]
@@ -54,8 +57,12 @@ class Store_SQLite
   def validate_token(token)
     result_set = @db.execute 'SELECT * FROM sessions;'
     result_set = result_set.map{|e| e}
+    
+    
     result_set = @db.execute 'SELECT user FROM sessions WHERE token=?;', [token.encode('UTF-8')]
     result_set = result_set.map{|e| e}
+    
+    
     return result_set.length > 0 ? result_set[0][0] : nil
   end
 

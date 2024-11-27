@@ -1,10 +1,14 @@
 require "./store.rb"
+require "http"
 
 class AppState
   def initialize(login_hash, sync = true, store = nil)
+    
+    
     @temp_unsafe_login = login_hash
     @db = store ? store 
-    : Store_SQLite.from_filename("store.db")
+    : Store_SQLite.from_filename("database.db")
+    
     if sync
       sync_products()
     end
@@ -17,6 +21,7 @@ class AppState
 
   def sync_products()
     list = request_products_external()["data"]
+    
     list.each do |hash|
       @db.add_product(hash["id"], hash["name"])
     end 
@@ -36,17 +41,29 @@ class AppState
 
   # Create new session with random token
   def get_credential(user, password)
-    credentials = @temp_unsafe_login.select {|key, credential| credential[:user] == user}.values
+    
+    credentials = @temp_unsafe_login.select {|key, credential| 
+      
+      
+      
+      credential["user"] == user
+    }.values
+    
+    
     if credentials.length == 0
+      
       return ["nocred", nil]
     else
       cred = credentials[0]
-      if cred[:password] == password
+      if cred["password"] == password
         token = SecureRandom.hex(10)
         # store token
-        @db.add_token(cred[:user], token.to_s)
+        @db.add_token(cred["user"], token.to_s)
+        
         return ["token", token]
       else
+        
+        
         return ["invalid", nil]
       end
     end
