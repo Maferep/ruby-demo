@@ -7,6 +7,10 @@ class AppState
     : Store_SQLite.from_filename("store.db")
 	end
 
+  def request_products_external()
+    HTTP.headers(:accept => "application/json").post("https://23f0013223494503b54c61e8bee1190c.api.mockbin.io")
+  end
+
   def validate_token(token)
     @db.validate_token(token)
   end
