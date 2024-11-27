@@ -1,4 +1,4 @@
-FUDO es una empresa argentina de software que ofrece una amplia gama de servicios informáticos de logística, gestión y recolección de datos a miles de clientes en la industria de alimentos a través de una plataforma web.
+FUDO es una empresa argentina de software que ofrece una amplia gama de servicios informáticos de logística, gestión y recolección de datos a miles de clientes en la industria gastronómica a través de una plataforma web.
 
 Con FUDO una empresa particular puede ofrecer una plataforma digital de pedidos a sus clientes o un menú QR, pero también funciona detrás de escenas, sea registrando el movimiento de inventario en la cocina de un restaurante, o ayudando a administrar la parte financiera. Puede acumular información diariamente sobre las actividades de la empresa y presentarle reportes automáticos al cliente que le proveen una visión general del negocio. 
 
