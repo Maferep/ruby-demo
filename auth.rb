@@ -5,23 +5,20 @@ class Authenticator
   end
 
   def is_restricted(endpoint)
-    return ((endpoint == "/product") or (endpoint == "/products"))
+    ((endpoint == '/product') or (endpoint == '/products'))
   end
 
   def call(env)
-    if not is_restricted env["PATH_INFO"]
-      return @app.call env
-    end
+    return @app.call env unless is_restricted env['PATH_INFO']
 
     req = Rack::Request.new env
     token = req.cookies['id']
-    
-    
-    if not token
+
+    unless token
       return [
         403,
-        {'content-type' => 'text/plain'},
-        [ 'Not Authorized' ]
+        { 'content-type' => 'text/plain' },
+        ['Not Authorized']
       ]
     end
 
@@ -29,11 +26,11 @@ class Authenticator
     if user.nil?
       return [
         403,
-        {'content-type' => 'text/plain'}, # missing www header
-        [ 'Not Authorized' ]
+        { 'content-type' => 'text/plain' }, # missing www header
+        ['Not Authorized']
       ]
     end
 
-    return @app.call env
+    @app.call env
   end
 end
