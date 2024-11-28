@@ -15,8 +15,8 @@ class Authenticator
 
     req = Rack::Request.new env
     token = req.cookies['id']
-    print "get cookies"
-    puts token
+    
+    
     if not token
       return [
         403,

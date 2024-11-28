@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# login
+response=$( curl -s -i -X POST -d "user=user2" -d "password=password2" localhost:9292/login )
+token=$( echo "$response" \
+  | grep "set-cookie: id=" \
+  | sed "s/^.*=//" \
+  | tr -d '[:space:]' \
+)
+
+if [[ $token == "" ]]; then
+  echo "NO TOKEN!"
+  exit
+fi
+
+# GET products
+response=$( curl -s --cookie "id=$token" localhost:9292/products )
+
+# maybe do something with these?
+echo "Token=$token"
+echo $response

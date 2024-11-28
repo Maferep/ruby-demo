@@ -17,10 +17,15 @@ App is exposed on localhost:9292
 
 ```bundle exec ruby test.rb```
 
-## cURL commands
-```curl -o - -v -X POST -d "user=user2&password=password2" localhost:9292/login -H "Content-Type: application/x-www-form-urlencoded" -v```
+## cURL tests
+
+Execute this shell script in the root directory to test the app using cURL:
+
+```./testlogin```
 
 # Docker
+
+Run as a Docker container using the host network:
 
 ```docker build -t my-ruby-app .```
 

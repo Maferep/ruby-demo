@@ -57,17 +57,10 @@ class Store_SQLite
   def validate_token(token)
     result_set = @db.execute 'SELECT * FROM sessions;'
     result_set = result_set.map{|e| e}
-    puts "full"
-    print result_set
+    
     result_set = @db.execute 'SELECT user FROM sessions WHERE token=?;', [token.encode('UTF-8')]
     result_set = result_set.map{|e| e}
-    puts "\n real"
-    print token
-    print token
-    print token
-    print token
-    print token
-    print result_set
+    
     return result_set.length > 0 ? result_set[0][0] : nil
   end
 
