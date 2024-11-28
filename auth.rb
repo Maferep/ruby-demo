@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Authenticator
   def initialize(app, store)
     @app = app

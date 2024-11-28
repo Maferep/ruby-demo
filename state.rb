@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require './store'
 require 'http'
 
@@ -17,7 +19,7 @@ class AppState
   end
 
   def sync_products
-    return if @db.list_products.length > 0
+    return if @db.list_products.length.positive?
 
     list = request_products_external['data']
 
@@ -44,7 +46,7 @@ class AppState
       credential['user'] == user
     end.values
 
-    return ['nocred', nil] if credentials.length == 0
+    return ['nocred', nil] if credentials.empty?
 
     cred = credentials[0]
     return ['invalid', nil] unless cred['password'] == password

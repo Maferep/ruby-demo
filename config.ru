@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require './app'
 
 # initialize with default credentials from file

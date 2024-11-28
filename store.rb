@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sqlite3'
 
 class Store_SQLite
@@ -41,7 +43,7 @@ class Store_SQLite
   end
 
   def add_token(user, token)
-    raise StandardError.new 'null user or token' if !user || !token
+    raise StandardError, 'null user or token' if !user || !token
 
     @db.execute(
       'INSERT INTO sessions (user, token, date_created) VALUES (?, ?, datetime(\'now\'));',
@@ -59,6 +61,6 @@ class Store_SQLite
     result_set = @db.execute 'SELECT user FROM sessions WHERE token=?;', [token.encode('UTF-8')]
     result_set = result_set.map { |e| e }
 
-    result_set.length > 0 ? result_set[0][0] : nil
+    result_set.length.positive? ? result_set[0][0] : nil
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cuba'
 require 'json'
 require 'securerandom'
@@ -25,7 +27,7 @@ def define_apis
           end
           credential = $app.get_credential(user, password)
           if credential[0] == 'token'
-            res.headers['set-cookie'] = 'id=' + credential[1].to_s
+            res.headers['set-cookie'] = "id=#{credential[1]}"
             res.write ''
           else
             res.status = 403
