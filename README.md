@@ -17,6 +17,9 @@ App is exposed on localhost:9292
 
 ```bundle exec ruby test.rb```
 
+## cURL commands
+```curl -o - -v -X POST -d "user=user2&password=password2" localhost:9292/login -H "Content-Type: application/x-www-form-urlencoded" -v```
+
 # Docker
 
 ```docker build -t my-ruby-app .```
